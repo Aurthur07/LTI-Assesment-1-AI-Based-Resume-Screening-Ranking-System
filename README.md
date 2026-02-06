@@ -1,12 +1,9 @@
-# SmartHire🤖 - First Runner up (Epitome 25)
+# AI-Driven Resume Screening System
 
-Welcome to **SmartHire**, An AI-driven resume filtering system that intelligently ranks and shortlists candidates based on job-specific criteria. 
-
----
 
 ## 🌟Quick Introduction
 
-  Hiring the right candidates is challenging, with companies spending significant time reviewing resumes even after automation. Existing methods often rely on rigid filtering, missing strong candidates and failing to provide meaningful shortlisting. Our solution analyzes resumes in context, allowing recruiters to set custom criteria like skills, proficiency , education and even Github activity. With weighted scoring, it scores candidates based on relevance, enabling companies to focus on top applicants and streamline the hiring process efficiently.
+  Hiring the right candidates is challenging, with companies spending significant time reviewing resumes even after automation. Existing methods often rely on rigid filtering, missing strong candidates and failing to provide meaningful shortlisting. Our solution analyzes resumes in context, allowing recruiters to set custom criteria like skills, proficiency , education and even Github activity. With weighted scoring, it scores candidates based on relevance, enabling companies to focus on top applicants and streamline the hiring process efficiently.This project is an academic/technical assessment implementation based on an open-source Project. The purpose of the assessment was to understand, configure, execute, and evaluate an AI-driven resume screening system rather than develop the solution from scratch.
 
 ### ✨Features
 - ✅ **Customizable Evaluation Parameters** - Admins can define their own job-specific criteria for filtering resumes.  
@@ -110,7 +107,7 @@ graph TD;
 
 ### Model Settings
 - **LLM**: Google Gemini Pro
-- **Fine-tuned Model ID**: `tunedModels/v1smarthirr-64usbdiq2vd5`
+- **Fine-tuned Gemini Pro model**: (project-specific)
 - **Temperature**: 0.2
 - **Top P**: 0.8
 - **Top K**: 40
