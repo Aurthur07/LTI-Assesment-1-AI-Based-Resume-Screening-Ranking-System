@@ -1,183 +1,156 @@
+# SmartHire🤖 - First Runner up (Epitome 25)
 
-AI-Based Resume Screening & Ranking System
+Welcome to **SmartHire**, An AI-driven resume filtering system that intelligently ranks and shortlists candidates based on job-specific criteria. 
 
-(Assessment Implementation & Evaluation)
+---
 
-📌 Project Context
-# Streamlit interface for assessment-based evaluation of an AI-driven resume scoring system
-This project is an academic/technical assessment implementation based on an open-source GitHub repository. The purpose of the assessment was to understand, configure, execute, and evaluate an AI-driven resume screening system rather than develop the solution from scratch.
+## 🌟Quick Introduction
 
-The work focused on:
+  Hiring the right candidates is challenging, with companies spending significant time reviewing resumes even after automation. Existing methods often rely on rigid filtering, missing strong candidates and failing to provide meaningful shortlisting. Our solution analyzes resumes in context, allowing recruiters to set custom criteria like skills, proficiency , education and even Github activity. With weighted scoring, it scores candidates based on relevance, enabling companies to focus on top applicants and streamline the hiring process efficiently.
 
-Understanding system architecture and data flow
-This implementation is adapted and evaluated as part of an academic/technical assessment
- based on an open-source project.
-Resolving dependency and environment issues
+### ✨Features
+- ✅ **Customizable Evaluation Parameters** - Admins can define their own job-specific criteria for filtering resumes.  
+- ✅ **Semantic Evaluation** - Goes beyond basic keyword searches to provide semantic understanding of job descriptions and resumes. 
+- ✅ **Dynamic Weight Assignment** - Adjust importance for each parameter to fine-tune ranking.  
+- ✅ **AI-Driven Resume Parsing** - Extracts relevant details like skills, experience, and qualifications.  
 
-Running the application locally
+---
 
-Evaluating AI-driven resume scoring logic
+## 🚀 Architecture
 
-Identifying strengths, limitations, and design trade-offs
-
-🎯 Project Overview (Assessment Perspective)
-
-The system is an AI-driven resume filtering and ranking application that evaluates candidates based on job-specific criteria. Instead of rigid keyword-based filtering, it uses semantic analysis, embeddings, and weighted scoring to assess resume relevance more contextually.
-
-From an assessment standpoint, the system demonstrates how modern LLM-based architectures can assist in automating candidate shortlisting while retaining flexibility for recruiters.
-
-🧠 Functional Capabilities Evaluated
-1. Resume Understanding
-
-Accepts resumes in PDF format
-
-Extracts and chunks resume text
-
-Generates embeddings using a Gemini-based embedding model
-
-Stores embeddings in a local vector database for retrieval
-
-2. Parameter-Driven Evaluation
-
-Recruiters or administrators define evaluation parameters which are categorized into:
-
-Textual parameters – semantic evaluation using LLMs
-
-Quantitative parameters – numeric scoring logic
-
-Boolean parameters – eligibility-based checks
-
-Each parameter contributes to a final weighted score for each candidate.
-
-3. AI-Assisted Shortlisting
-
-Uses a fine-tuned Google Gemini Pro model
-
-Evaluates resumes against job-specific requirements
-
-Produces consistent, explainable scores rather than binary decisions
-
-🏗️ System Architecture (As Analyzed)
-Resume Processing Flow
+### Resume Processing Flow
+```mermaid
 graph TD
-    A[Applicant] -->|Uploads Resume| B[PDF File]
-    B -->|Text Extraction| C[SimpleDirectoryReader]
-    C -->|Chunking| D[Text Chunking]
+    A[Applicant] -->|Uploads Resume| B[/PDF Document/]
+    B -->|Extracts Text| C[SimpleDirectoryReader]
+    C -->|Chunk Text| D[Text Chunking]
     D -->|Generate Embeddings| E[Gemini Embeddings]
-    E -->|Store| F[Vector Store]
-    F --> G[Retrieval Ready]
-
-Parameter Evaluation Flow
+    E -->|Store in Vector DB| F[(Vector Store)]
+    F -->G[Ready for Retrieval]
+```
+### Parameter Evaluation Flow
+```mermaid
 graph TD;
-    A[Load Evaluation Parameters] --> B{Parameter Type};
-    B -->|Textual| C[LLM-Based Evaluation];
-    B -->|Quantitative| D[Formula-Based Scoring];
-    B -->|Boolean| E[Condition Check];
+    A[Load Parameter Details] -->|Fetch from| DB[(Database)];
+    A --> B{Check Parameter Type};
+    B -->|Quantitative: Numeric Values e.g., GPA, Experience| C[Quantitative];
+    B -->|Boolean: Yes/No Criteria e.g., Certification, Skills| D[Boolean];
+    B -->|Textual: Free-Text Analysis e.g., Project Description| E[Textual];
+    
+    C --> C1[Calculate Quantitative Score];
+    D --> D1[Calculate Boolean Score];
+    E --> E1[Calculate Textual Score];
 
-    C --> F[Compute Final Score];
-    D --> F;
-    E --> F;
+    C1 --> F[Compute Final Score];
+    D1 --> F--> H[Display to User];;
+    E1 --> F;
 
-    F --> DB[(Database)];
+    F -->|Store| DB;
+    DB 
+```
+## 🚀 Parameter Classifcation
 
-🧪 Parameter Classification (Assessment Understanding)
+All provided evaluation criteria (parameters) are classified into three types based on their nature: Quantitative, Boolean, and Textual. This ensures a structured and efficient evaluation process, allowing the system to handle different kinds of job criterias accurately.
 
-All evaluation parameters are categorized to ensure structured scoring.
+### 1️⃣ Textual Parameters
 
-1️⃣ Textual Parameters
+These evaluate proficiency in a given topic by analysing  open-ended descriptions like project details, work responsibilities, and known skills. A fine-tuned LLM analyzes context and assigns scores based on relevance to the job role. These scores assigned are consistent
 
-Used for evaluating descriptive or open-ended information such as:
+```mermaid
+graph TD;
+    A[Load Parameter Description] -->|Fetch from| DB[(Database)];
+    B[Extract Resume Text] --> C[Send Parameter & Resume Text to Fine-Tuned LLM];
+    C --> D[LLM Evaluates Context & Relevance];
+    D --> E[Generates Consistent Score];
+    E -->|Store Score| DB;
+```  
+### 2️⃣ Quantitative Parameters
 
-Project descriptions
+These parameters involve measurable values like years of experience, GPA, and project counts. The system retrieves relevant details, applies predefined scoring formulas, and assigns a weighted score based on the given range.
 
-Skill proficiency
+```mermaid
+graph TD;
+    A[Load Parameters] -->C[Extract Relevant Resume Data];
+    B[Retriever]; VS[(Vector Store)];
+    VS --> B;C<-->B;B-->X[Response]-->D;
+     D[Apply Scoring Formula];
+    D --> E[Generate Weighted Score];
+    E -->|Store Score| DB[(Database)];
+```   
+### 3️⃣ Boolean Parameters
+Boolean parameters are yes/no criteria, such as certifications, specific tool proficiency, or mandatory skills. If the candidate meets the requirement, they receive full points; otherwise, they get none.
 
-Work responsibilities
+```mermaid
+graph TD;
+    A[Load Parameters] --> C[Extract Relevant Resume Data];
+    B[Retriever]; VS[(Vector Store)];
+    VS --> B; C <--> B; B --> X[Response] --> D;
+    D[Check Requirement Met?];
+    D -- Yes --> E[Assign Full Score];
+    D -- No --> F[Assign Zero Score];
+    E -->|Store Score| DB[(Database)];
+    F -->|Store Score| DB;
 
-A fine-tuned LLM analyzes contextual relevance and assigns a consistent score.
+``` 
+---
 
-2️⃣ Quantitative Parameters
+## ⚙️ Configurations
 
-Used for measurable criteria such as:
+### Document Processing
+- **Chunk Size**: 70 tokens
+- **Chunk Overlap**: 10 tokens
+- **Document Format**: PDF 
 
-Years of experience
+### API Rate Limits
+- **Max Requests**: 50 requests per minute
+- **Window Size**: 60 seconds
+- **Retry Configuration**:
+  - Max Attempts: 3
+  - Exponential Backoff: 1-10 seconds
 
-Academic scores (GPA)
+### Model Settings
+- **LLM**: Google Gemini Pro
+- **Fine-tuned Model ID**: `tunedModels/v1smarthirr-64usbdiq2vd5`
+- **Temperature**: 0.2
+- **Top P**: 0.8
+- **Top K**: 40
+- **Max Output Tokens**: 2048
 
-Number of projects
+### Vector Store
+- **Index Type**: VectorStoreIndex
+- **Embedding Model**: Gemini Embeddings
+- **Storage**: Local Persistence
+- **Cache Directory**: `./cache`
 
-Predefined formulas are applied and combined with parameter weights.
+---
 
-3️⃣ Boolean Parameters
+## 📋 Best Practices & Limitations
 
-Used for yes/no conditions such as:
+### Best Practices
 
-Required certifications
+#### Resume Processing
+- Keep resumes under 10MB
+- Use PDF format for consistent parsing
+- Ensure text is extractable (not scanned images)
+- Maintain standard formatting
+- Clear section headers (Experience, Education, Skills)
 
-Mandatory skills
+#### Parameter Configuration
+- Keep parameter names clear and specific
+- Assign weights based on job importance
+- Use quantitative parameters for measurable criteria
+- Use words like Is/Has for boolean parameters
+- Use words like Knowledge/Proficienct for textual parameters
+  for skill evaluations
 
-GitHub presence
 
-Candidates receive full or zero points based on eligibility.
+### ⚠️ Limitations
 
-⚙️ Configuration Details (Observed Setup)
-Document Processing
+- **File Support**: PDF only
+- **Maximum File Size**: 10MB
+- **Rate Limits**: 50 requests/minute
+- **API Timeout**: 30 seconds
+- **Vector Dimension**: 768 (Gemini embeddings)
+- **Maximum Tokens**: 2048 per request
+- **Chunk Limits**: 70 tokens per chunk
 
-Format: PDF
-
-Chunk size: 70 tokens
-
-Chunk overlap: 10 tokens
-
-Model Configuration
-
-LLM: Google Gemini Pro
-
-Fine-tuned model ID: tunedModels/v1smarthirr-64usbdiq2vd5
-
-Temperature: 0.2
-
-Max output tokens: 2048
-
-Vector Storage
-
-Index type: VectorStoreIndex
-
-Embedding model: Gemini Embeddings
-
-Storage: Local persistence
-
-📊 Key Observations
-Strengths
-
-Semantic evaluation beyond keyword matching
-
-Flexible and customizable scoring parameters
-
-Modular design separating embeddings, retrieval, and scoring
-
-Explainable candidate ranking logic
-
-Limitations
-
-Supports PDF resumes only
-
-Heavy dependency on external LLM APIs
-
-Requires strict version alignment for LLM plugins
-
-Local vector storage may not scale for large datasets
-
-API rate limits can impact batch processing
-
-📚 Assessment Summary
-
-This implementation demonstrates how LLMs, embeddings, and vector databases can be applied to resume screening workflows. As part of the assessment, the system was:
-
-Successfully configured and executed locally
-
-Debugged for dependency and compatibility issues
-
-Evaluated from an architectural and functional perspective
-
-The project serves as a strong reference for understanding AI-assisted candidate evaluation systems, while also highlighting real-world challenges related to scalability, dependency management, and API reliance.
