@@ -1,0 +1,11 @@
+
+ipython==8.12.3
+llama_index==0.12.17
+pandas==2.2.3
+plotly==6.0.0
+protobuf==5.29.3
+PyPDF2==3.0.1
+python-dotenv==1.0.1
+streamlit==1.41.1
+
+tenacity==9.0.0
